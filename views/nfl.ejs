@@ -5,8 +5,8 @@
     <script src="https://cdn.jsdelivr.net/npm/powerbi-client@2.21.0/dist/powerbi.min.js"></script>
   </head>
   <body>
-    <h2>Power BI Embedded Report</h2>
-    <div id="reportContainer" style="width:100%; height:800px;"></div>
+
+    <div id="reportContainer" style="width:100%; height:900px;"></div>
 
     <script>
   async function embedPowerBIReport() {
@@ -40,7 +40,7 @@
           pageNavigation: { visible: false }
         },
         bars: {
-          statusBar: { visible: true }
+          statusBar: { visible: false }
         }
       }
     };
