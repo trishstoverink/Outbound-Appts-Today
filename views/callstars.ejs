@@ -1,0 +1,67 @@
+ <!DOCTYPE html>
+<html>
+  <head>
+    <title>Embedded Power BI Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/powerbi-client@2.21.0/dist/powerbi.min.js"></script>
+  </head>
+  <body>
+    <h2>Power BI Embedded Report</h2>
+    <div id="reportContainer" style="width:100%; height:800px;"></div>
+
+    <script>
+  async function embedPowerBIReport() {
+    const models = window['powerbi-client'].models;
+
+    const accessToken = "<%= accessToken %>";
+    const embedUrl = "<%= embedUrl %>";
+    const reportId = "<%= reportId %>";
+    const tokenType = <%= tokenType %>; // numeric (0 or 1)
+        const filter = {
+    $schema: "http://powerbi.com/product/schema#basic",
+    target: {
+        table: "Team",
+        column: "Partner_Sales_Team__c"
+    },
+    operator: "In",
+    values: ["Callstars"]
+};
+
+    const config = {
+      type: 'report',
+      tokenType: tokenType == 0 ? models.TokenType.Aad : models.TokenType.Embed,
+      accessToken: accessToken,
+      embedUrl: embedUrl,
+      id: reportId,
+      filters: [filter],
+      permissions: models.Permissions.All,
+      settings: {
+        panes: {
+          filters: { visible: false },
+          pageNavigation: { visible: false}
+        },
+        bars: {
+          statusBar: { visible: true }
+        }
+      }
+    };
+
+const embedContainer = document.getElementById("reportContainer");
+    const report = powerbi.embed(embedContainer, config);
+
+    report.on("loaded", () => console.log("Report loaded"));
+    report.on("rendered", () => console.log("Report rendered"));
+    report.on("error", (event) => console.error(event.detail));
+  }
+      
+      
+
+  embedPowerBIReport();
+
+setInterval(() => {
+  window.location.reload();
+}, 5 * 60 * 1000);
+
+
+    </script>
+  </body>
+</html>
